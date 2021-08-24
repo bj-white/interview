@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    var a = {
+      info: {
+        name: 'a'
+      },
+      address: 'henan'
+    };
+    function deepClone1 (obj) {
+      let objClone = Array.isArray(obj) ? [] : {};
+      if (obj && typeof obj === 'object') {
+        for (var key in obj) {
+          if (obj[key] && typeof obj[key] === 'object') {
+            objClone[key] = deepClone1(obj[key]);
+          } else {
+            objClone[key] = obj[key];
+          }
+        }
+      }
+      return objClone;
+    }
+
+    function getType (value) {
+      return Object.prototype.toString.call(value).slice(-7, -1);
+    }
+
+    function deepClone2 (obj) {
+      var result;
+      var type = getType(obj);
+      if (type === 'Object' || type === 'Array') {
+        result = type === 'Object' ? {} : [];
+        for (var key in obj) {
+          result[key] = deepClone2(obj[key]);
+        }
+      } else {
+        result = obj;
+      }
+      return result;
+    }
+    var b = deepClone2(a);
+    a.address = 'beijing';
+    a.info.name = 'aaaaaaaaa';
+    console.log(a);
+    console.log(b);
+
+    var o1 = new Object();
+    console.log(o1.__proto__ === Object.prototype);
+  </script>
+</body>
+</html>

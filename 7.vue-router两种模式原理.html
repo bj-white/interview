@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <a href="#hello">hello</a>
+  <a href="#world">world</a>
+  <script>
+    // hash
+    window.onhashchange = function (e) {
+      console.log(e);
+    };
+    // history
+    // 只能监听到浏览器的前进后退或history.back forward等方法
+    window.addEventListener('popstate', function (e) {
+			console.log(e);
+		});
+    // 不会触发onpopstate
+		document.getElementById('a').onclick = function () {
+			history.pushState({}, '', './a.html');
+		};
+		document.getElementById('b').onclick = function () {
+			history.pushState({}, '', './b.html');
+		};
+  </script>
+</body>
+</html>
