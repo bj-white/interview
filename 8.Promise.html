@@ -6,6 +6,25 @@
 </head>
 <body>
   <script>
+    /******************
+    Promise.resolve()
+    .then(() => {
+      return new Error('error!!!')
+    })
+    .then((res) => {
+      console.log('then: ', res) // 输出
+    })
+    .catch((err) => {
+      console.log('catch: ', err)
+    })
+
+    Promise.resolve(1)
+    .then(2)
+    .then(Promise.resolve(3))
+    .then(console.log)
+    // 输出1 .then期望的是函数，如果不是函数则会透传
+     * 
+    */
     /*
     Promise.then得第二个参数和Promise.catch效果一样，但.catch能捕捉.then得报错，第二个参数却不行。
     .all以慢的为准，一旦又失败，整体失败
@@ -47,7 +66,7 @@
         if (this.status == 'panding') {
           this.onResolvedCallbacks.push(function (value) {
             var result = onFulFilled(value);
-            result.then((x) => {
+            result && result.then((x) => {
               resolve(x);
             });
           });
@@ -75,10 +94,19 @@
       console.log(error);
     }).then((response) => {
       console.log(response);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(3);
+        }, 0);
+      });
+    }, (error) => {
+      console.log(error);
+    }).then((response) => {
+      console.log(response);
     }, (error) => {
       console.log(error);
     });
-    console.log(p1);
+    // console.log(p1);
   </script>
 </body>
 </html>
