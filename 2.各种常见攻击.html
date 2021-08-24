@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<form method="POST" action="http://localhost:8080/getUser" id="fm">
+　		<input type="hidden" name="name" value="hello world">
+　	</form>
+	<script>
+		/*
+			一、CSRF攻击
+				理解：用户先在A网站登录，然后访问B网站的时候，B网站以你的名义发送恶意请求
+				1、get请求：很好理解，例如：B网站有一段代码<img src=http://www.mybank.com/Transfer.php?toBankId=11&money=1000>，你的账户就会少1000块钱。
+				2、post请求：代码已演示
+				服务端进行CSRF防御：服务端的CSRF方式方法很多样，但总的思想都是一致的，就是在客户端页面增加伪随机数。
+				1、所有表单都包含同一个伪随机值：后端生成一个随机数给前端（cookie和页面），前端提交表单带上随机数，后端从cookie取这个数和表单里的数做对比
+				2、验证码
+		*/
+		document.getElementById('fm').submit();
+	</script>
+</body>
+</html>

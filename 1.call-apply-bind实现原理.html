@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		/* function genFun (args, bd) {
+			// new Function('a', 'b', 'return a + b;')
+			return new Function(...args, bd);
+		}
+		console.log(genFun(['a', 'b'], 'return a + b;')(1, 2)); */
+
+		var name = 1;
+		var obj = {name: 2};
+		function fun (a, b) {
+			console.log(this.name);
+			console.log(a);
+			console.log(b);
+		}
+		// bind
+		/* Function.prototype.myBind = function () {
+			var fn = this;
+			var context = arguments[0];
+			return function () {
+				fn.apply(context, arguments);
+			};
+		}; */
+		// call
+		Function.prototype.myCall = function (context, ...args) {
+			context = context || window;
+			// 如果context有fn方法，fn会被覆盖，可用Sybmol()代替
+			context.fn = this;
+			// ...展开符可用eval代替
+			// var result = eval('context.fn(' + args.join(',') + ')');
+			// var result = genFun();
+			var result = context.fn(...args);
+			delete context.fn;
+			return result;
+		};
+		// fun.myCall(obj, 1, 2);
+		// apply
+		Function.prototype.myApply = function (context, args) {
+			context = context || window;
+			context.fn = this;
+			var result = context.fn(...args);
+			delete context.fn;
+			return result;
+		};
+	</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+JavaScript深入之从ECMAScript规范解读this: https://github.com/mqyqingfeng/Blog/issues/7
+
+obj.say();
+(obj.say)();
+(false || obj.say)();
+(obj.say = obj.say)();
+(obj.say, obj.say)();
+    
+1、创建新对象
+2、将构造函数的this指向新对象
+3、把构造函数的方法和属性添加到新对象
+4、返回新对象
+
+bind优先级高于apply
+
+new Function();生成函数
+
+JavaScript 引擎基础：原型优化: https://hijiangtao.github.io/2018/08/21/Prototypes/
+
+
+JavaScript 中的继承：ES3、ES5 和 ES6: http://tianfangye.com/2017/12/31/inheritance-in-javascript-es3-es5-and-es6/

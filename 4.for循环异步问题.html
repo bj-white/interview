@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		/* for (var i = 0; i < 5; i++) {
+			setTimeout(() => {
+				console.log(i);
+			}, 1000);
+		}
+		console.log(i); */
+		/*
+			1、先输出一个5，一秒后输出5个5
+			？、怎么能输出0、1、2、3、4、5
+		*/
+		// 方法一：闭包
+		/* for (var i = 0; i < 5; i++) {
+			(function (i) {
+				setTimeout(() => {
+					console.log(i);
+				}, 1000);
+			})(i);
+		}
+		console.log(i); // 5->0,1,2,3,4 */
+		// 方法二：setTimeout第三个参数，可以传入多个参数，用作回调函数的参数
+		/* for (var i = 0; i < 5; i++) {
+			setTimeout(function (i) {
+				console.log(i);
+			}, 1000, i);
+		}
+		console.log(i); */
+		// 方法三：es6 let
+		/* for (let i = 0; i < 5; i++) {
+			setTimeout(() => {
+				console.log(i);
+			}, 1000);
+		}
+		console.log(i); // 报错，访问不到i */
+		// 追问：怎么能变成期望的效果0->1->2->3->4->5
+		// 方法一：笨方法
+		/* for (var i = 0; i < 5; i++) {
+			(function (i) {
+				setTimeout(() => {
+					console.log(i);
+				}, i * 1000);
+			})(i);
+		}
+		setTimeout(() => {
+			console.log(i);
+		}, 5000); */
+		// 方法二：Promise
+		/* var tasks = [];
+		for (var i = 0; i < 5; i++) {
+			(function (i) {
+				tasks.push(new Promise((resolve) => {
+					setTimeout(() => {
+						console.log(i);
+						resolve();
+					}, i * 1000);
+				}));
+			})(i);
+		}
+		// 复习：Promise.all  Promise.race
+		Promise.all(tasks).then(() => {
+			setTimeout(() => {
+				console.log(i);
+			}, 1000);
+		}); */
+		// 方法三：async await
+		var sleep = (time) => {
+			return new Promise((resolve) => {
+				setTimeout(resolve, time);
+			});
+		};
+		(async () => {
+			for (var i = 0; i < 5; i++) {
+				if (i > 0) {
+					await sleep(1000);
+				}
+				console.log(i);
+			}
+			await sleep(1000);
+			console.log(i);
+		})();
+	</script>
+</body>
+</html>
