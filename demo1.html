@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    var name = 1;
+    var obj = {
+      name: 2,
+      say: function () {
+        console.log(this.name);
+        console.log(typeof this.name);
+      }
+    };
+    obj.say();
+    (obj.say)();
+    (false || obj.say)();
+    (obj.say = obj.say)();
+    (obj.say, obj.say)();
+    // 4.2 16 2350 - 180 = 2170
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /*
+      常见宏任务 setTimeout setInterval
+      常见微任务 promise process.nextTick()
+      这两个任务的执行规则是什么？首先在call stack中的内容执行完毕清空后，
+      会在Event queue检查一下哪些是宏任务哪些是微任务，然后执行所有的微任务，
+      然后执行一个宏任务，之后再次执行所有的微任务。
+      也就是说在主线程任务执行完毕后会把任务队列中的微任务全部执行，
+      然后再执行一个宏任务，这个宏任务执行完再次检查队列内部的微任务，
+      有就全部执行没有就再执行一个宏任务。
+    */
+
+  </script>
+</body>
+</html>

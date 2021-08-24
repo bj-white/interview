@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    var arr = '[1, [2, [3, 4]]]';
+    // var fun = new Function('return ' + arr);
+    // eval
+    // JSON.parse()
+    // 递归
+
+    console.log(JSON.parse(arr));
+
+    /*
+      Function.__proto__ === Function.prototype
+      首先我们需要明确两点：1️、__proto__和constructor是对象独有的。2️、prototype属性是函数独有的；
+
+      __proto__默认走的是 Object.prototype 对象上 __proto__ 属性的 get/set 方法。
+    */
+    // Function.__proto__ === Function.prototype === Object.__proto__;
+    /*
+    FunctionL instanceof FunctionR
+    FunctionL.__proto__ = Function.prototype
+    FunctionR.prototype = Function.prototype
+
+    ObjectL instanceof ObjectR
+    ObjectL.__proto__ = Function.prototype  -> Function.prototype.__proto__ = Object.prototype
+    ObjectR.prototype = Object.prototype
+
+    PlaneL instanceof PlaneR
+    PlaneL.__proto__ = Function.prototype
+    PlaneR.prototype = Plane.prototype
+
+    Object instanceof Function
+    Object.__proto__ = Function.prototype
+    Function.prototype = Function.prototype
+
+    Function instanceof Object
+    Function.__proto__ = Function.prototype -> Function.prototype.__proto__ = Object.prototype
+    Object.prototype = Object.prototype
+    */
+
+  </script>
+</body>
+</html>

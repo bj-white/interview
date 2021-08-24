@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function Flyer (name, speed) {
+      this.name = name;
+      this.speed = speed;
+    }
+    Flyer.prototype.fly = function () {
+      console.log(this.name + '正在以' + this.speed + '速度飞行。');
+    };
+
+    function Plane (name , speed, score) {
+      Flyer.call(this, name, speed);
+      this.score = score;
+    }
+
+    /*
+    // 方法一：
+    Plane.prototype = new Flyer('f1', 10);
+
+    var p1 = new Plane('p1', 10, 20);
+    p1.fly();
+    console.log(p1);
+
+      p1 instanceof Flyer
+      p1.__proto__ = Plane.prototype = f1 -> f1.__proto__ = Flyer.prototype
+    */
+    // 方法二：和方法一相似
+    /* function inherit (C, P) {
+      var F = function () {};
+      F.prototype = P.prototype;
+      C.prototype = new F();
+      C.prototype.constructor = C;
+    }
+    inherit(Plane, Flyer);
+    var p1 = new Plane('p1', 10, 20);
+    p1.fly(); */
+  </script>
+</body>
+</html>
