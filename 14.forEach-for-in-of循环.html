@@ -2,11 +2,55 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style></style>
 </head>
 <body>
+  <div id ="app"></div>
   <script>
-    throw new Error('adsadsad');
+    /*forEach实现*/
+    // 注意：forEach中async、await失效 且不能break
+    Array.prototype.forEach = function (cb) {
+      for (var i = 0; i < this.length; i++) {
+        cb(this[i], i, this);
+      }
+    };
+    // for最常用
+    // in 可循环数组和对象 es5 到循环不到不可遍历的属性  用getOwnPropertyNames实现
+    // of es6 必须实现Symbol.iterator 和next方法
+    /* var num = 0;
+    var obj = {
+      [Symbol.iterator]: function () {
+        return this;
+      },
+      next: function () {
+        num++;
+        if (num > 10) {
+          return {done: true, value: num};
+        }
+        return {done: false, value: num};
+      }
+    };
+    for (var key of obj) {
+      console.log(key);
+    } */
+    var obj = {};
+    Object.defineProperties(obj, {
+      'a': {
+        value: 1,
+        enumerable: true,
+      },
+      'b': {
+        value: 2
+      }
+    });
+    /* for (let key in obj) {
+      console.log(obj[key]);
+    } */
+    var n = Object.getOwnPropertyNames(obj);
+    console.log(obj['b']);
   </script>
 </body>
 </html>
