@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function Obj (name, age) {
+      this.name = name;
+      this.age = age;
+    }
+    Obj.prototype[Symbol.iterator] = function () {
+      var keys = Object.keys(this);
+      var i = -1;
+      return {
+        next: function () {
+          i++;
+          return {value: keys[i], done: !keys[i]};
+        }
+      };
+    };
+
+    var obj = new Obj('obj, 18');
+    
+    for (let v of obj) {
+      console.log(v);
+    }
+  </script>
+</body>
+</html>

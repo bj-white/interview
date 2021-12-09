@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <ul class="list"></ul>
+  <script>
+    /*
+      函数为一等公民
+      纯函数：例如slice为纯函数，splice为不纯的函数，或者函数内部引入了外部变量也会使函数变得不纯
+    */
+
+    var curry = function (fn, args = []) {
+      var length = 2;
+      return function () {
+        args.push(arguments[0]);
+        if (args.length < length) {
+          return curry(fn, args);
+        } else {
+          return fn.bind(this, args);
+        }
+      }
+    };
+
+    var fn = function (str, key) {
+      return str.indexOf(key);
+    };
+
+    var search = curry(fn);
+
+    // console.log(search('abc')('b'));
+
+  </script>
+</body>
+</html>

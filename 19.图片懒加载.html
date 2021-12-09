@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    img {
+      display: block;
+      width: 300px;
+      height: 300px;
+    }
+  </style>
+</head>
+<body>
+  <img src="" alt="">
+  <img src="" alt="">
+  <img src="" alt="">
+  <img src="" alt="">
+  <img src="" alt="">
+  <img src="" alt="">
+  <img src="" alt="">
+  <img src="" alt="">
+  <img src="" alt="">
+  <img src="" alt="">
+  <img src="" alt="">
+  <img src="" alt="">
+  <script>
+    let imgList = [...document.querySelectorAll('img')]
+    let length = imgList.length
+
+    const imgLazyLoad = function() {
+      
+      let deleteIndexList = []
+      imgList.forEach((img, index) => {
+        let rect = img.getBoundingClientRect()
+        if (rect.top < window.innerHeight) {
+          img.src = './prototype1.jpg'
+          deleteIndexList.push(index)
+        }
+      })
+      imgList = imgList.filter((img, index) => !deleteIndexList.includes(index))
+      console.log(imgList);
+      if (!imgList.length) {
+        document.removeEventListener('scroll', imgLazyLoad)
+      }
+    }
+    imgLazyLoad();
+    // 这里最好加上防抖处理
+    document.addEventListener('scroll', imgLazyLoad)
+  </script>
+</body>
+</html>
