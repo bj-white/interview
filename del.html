@@ -3,152 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
+  <style>
+    .container {
+      display: flex;
+      border: 1px solid #ddd;
+    }
+    .item {
+      flex: 0 0 200px;
+      border: 1px solid red;
+      height: 100px;
+    }
+    .item1 {
+      flex: 0 1 200px;
+    }
+  </style>
 </head>
 <body>
-  <script>
-    Function.prototype.myCall = function (content, ...args) {
-      console.log(args);
-      content.fun = this;
-      var result = content.fun(...args);
-      delete content.fun;
-      return result;
-    };
-
-    Function.prototype.myApply = function (content, args) {
-      console.log(args);
-      content.fun = this;
-      var result = content.fun(...args);
-      delete content.fun;
-      return result;
-    };
-
-    Function.prototype.myBind = function (content, ...args) {
-      var fn = this;
-      return function () {
-        return fn.apply(content, args);
-      }
-    };
-
-    function myNew (ctor, ...args) {
-      var newObj = Object.create(ctor.prototype);
-      ctor.apply(newObj, args);
-      return newObj;
-    }
-
-    function myInstanceOf(a,b){
-      let left = a.__proto__;
-      let right = b.prototype;
-      while(true){
-        if(left == null){
-          return false
-        }
-        if(left == right){
-          return true
-        }
-        left = left.__proto__
-      }
-    }
-
-    function Promise (fn) {
-      this.callbacks = [];
-      this.state = 'padding';
-      this.value = null;
-
-      fn(this._resolve.bind(this), this._reject.bind(this));
-    }
-
-    Promise.prototype.then = function (onFulfilled, onRejected) {
-      return new Promise((resolve, reject) => {
-        this._handle({
-          onFulfilled,
-          onRejected,
-          resolve,
-          reject,
-        });
-      });
-    };
-
-    Promise.prototype._handle = function (callback) {
-      if (this.state === 'padding') {
-        this.callbacks.push(callback);
-        return;
-      }
-
-      let cb = this.state === 'fulfilled' ? callback.onFulfilled : callback.onRejected;
-
-      let ret = cb(this.value);
-
-      cb = this.state === 'fulfilled' ? callback.resolve : callback.reject;
-      cb(ret);
-    };
-
-    Promise.prototype._resolve = function (value) {
-      this.state = 'fulfilled';
-      this.value = value;
-      this.callbacks.forEach(callback => this._handle(callback));
-    };
-    Promise.prototype._reject = function () {};
-
-    var p1 = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(1);
-      }, 1000);
-    });
-
-    /* p1.then((response) => {
-      console.log(response);
-      return 2;
-    }, (error) => {
-      console.log(error);
-    }).then((response) => {
-      console.log(response);
-    }, (error) => {
-      console.log(error);
-    });
-    console.log(p1); */
-
-    class Subject{
-      constructor(name){
-        this.name = name
-        this.observers = []
-        this.state = 'XXXX'
-      }
-      // 被观察者要提供一个接受观察者的方法
-      attach(observer){
-        this.observers.push(observer)
-      }
-
-      // 改变被观察着的状态
-      setState(newState){
-        this.state = newState
-        this.observers.forEach(o=>{
-          o.update(newState)
-        })
-      }
-    }
-
-    class Observer{
-      constructor(name){
-        this.name = name
-      }
-
-      update(newState){
-        console.log(`${this.name}say:${newState}`)
-      }
-    }
-
-    // 被观察者 灯
-    let sub = new Subject('灯')
-    let mm = new Observer('小明')
-    let jj = new Observer('小健')
-    
-    // 订阅 观察者
-    sub.attach(mm)
-    sub.attach(jj)
-    
-    sub.setState('灯亮了来电了')
-    /*  */
-    
-  </script>
+  <div class="container">
+    <div class="item item1"></div>
+    <div class="item item2"></div>
+    <div class="item item3"></div>
+  </div>
 </body>
 </html>

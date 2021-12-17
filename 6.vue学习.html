@@ -5,21 +5,235 @@
   <title>Document</title>
 </head>
 <body>
+  <div id="root">
+    <span>{{msg}}</span>
+    <input type="text" v-model="msg">
+    <button v-on:click="handleClick">click me</button>
+  </div>
   <script>
     /*
       AST 抽象语法树
     */
 
-    var obj1 = {
-      name: {
-        a: 1
+    // https://github.com/2686685661/SelfVue
+    function Compile (vm) {
+      this.vm = vm;
+      this.el = document.querySelector(vm.options.el);
+      this.init();
+    }
+
+    Compile.prototype.init = function () {
+      var fragment = this.nodeToFragment();
+      this.compileElement(fragment);
+      this.el.appendChild(fragment);
+    };
+
+    Compile.prototype.nodeToFragment = function () {
+      var fragment = document.createDocumentFragment();
+      var child = this.el.firstChild;
+      while (child) {
+        fragment.appendChild(child);
+        child = this.el.firstChild;
+      }
+      return fragment;
+    };
+    
+    Compile.prototype.compileElement = function (fragment) {
+      var childNodes = fragment.childNodes;
+      [...childNodes].forEach((node) => {
+        var reg = /\{\{(.*)\}\}/;
+        var text = node.textContent;
+        if (this.isElementNode(node)) {
+          this.compile(node);
+        } else if (this.isTextNode && reg.test(text)) {
+          this.compileText(node, reg.exec(text)[1]);
+        }
+
+        if (node.childNodes && node.childNodes.length) {
+          this.compileElement(node);
+        }
+      });
+    };
+
+    Compile.prototype.isElementNode = function (node) {
+      return node.nodeType == 1;
+    };
+
+    Compile.prototype.isTextNode = function (node) {
+      return node.nodeType == 3;
+    };
+
+    Compile.prototype.compile = function (node) {
+      var nodeAttrs = node.attributes;
+      [...nodeAttrs].forEach((attr) => {
+        var attrName = attr.name;
+        if (this.isDirective(attrName)) {
+          var exp = attr.value;
+          var dir = attrName.substring(2);
+          if (this.isEventDirective(dir)) {
+            this.compileEvent(node, exp, dir);
+          } else {
+            this.compileModel(node, exp, dir);
+          }
+          node.removeAttribute(attrName);
+        }
+      });
+    };
+    
+    Compile.prototype.compileText = function (node, exp) {
+      var initText = this.vm[exp];
+      node.textContent = typeof initText == 'undefined' ? '' : initText;
+      new Watcher(this.vm, exp, function (value) {
+        node.textContent = typeof value == 'undefined' ? '' : value;
+      });
+    };
+
+    Compile.prototype.isDirective = function (attrName) {
+      return attrName.indexOf('v-') == 0;
+    };
+
+    Compile.prototype.compileEvent = function (node, exp, dir) {
+      var eventType = dir.split(':')[1];
+      var cb = this.vm.options.methods && this.vm.options.methods[exp];
+      if (eventType && cb) {
+        node.addEventListener(eventType, cb.bind(this.vm), false);
       }
     };
-    var obj2 = Object.assign({}, obj1);
 
-    obj1.name.a = 2;
+    Compile.prototype.isEventDirective = function (dir) {
+      return dir.indexOf('on:') === 0;
+    };
 
-    console.log(obj2);
+    Compile.prototype.compileModel = function (node, exp, dir) {
+      var value = this.vm[exp];
+      node.value = typeof value == 'undefined' ? '' : value;
+      new Watcher(this.vm, exp, function (value) {
+        node.value = typeof value == 'undefined' ? '' : value;
+      });
+      node.addEventListener('input', function (e) {
+        var newValue = e.target.value;
+        if (value === newValue) {
+          return;
+        }
+        this.vm[exp] = newValue;
+        value = newValue;
+      }.bind(this));
+    };
+
+    // Compile.prototype.nodeToFragment = function () {};
+
+    function Watcher (vm, exp, cb) {
+      this.vm = vm;
+      this.exp = exp;
+      this.cb = cb;
+      this.value = this.get();
+    }
+
+    Watcher.prototype.get = function () {
+      Dep.target = this;
+      var value = this.vm.options.data[this.exp];
+      Dep.target = null;
+      return value;
+    };
+
+    Watcher.prototype.update = function () {
+      var value = this.vm.options.data[this.exp];
+      if (value !== this.value) {
+        this.value = value; 
+        this.cb.call(this.vm, value);
+      }
+    };
+
+    function Dep () {
+      this.subs = [];
+    }
+
+    Dep.prototype.add = function (watcher) {
+      this.subs.push(watcher);
+    };
+
+    Dep.prototype.notify = function () {
+      this.subs.forEach((watcher) => {
+        watcher.update();
+      });
+    };
+
+    Dep.target = null;
+
+    function Observe (vm) {
+      this.init(vm.options.data);
+    }
+
+    Observe.prototype.init = function (data) {
+      Object.keys(data).forEach((key) => {
+        var value = data[key];
+        var dep = new Dep();
+        Object.defineProperty(data, key, {
+          get: function () {
+            if (Dep.target) {
+              dep.add(Dep.target);
+            }
+            return value;
+          },
+          set: function (newValue) {
+            if (value === newValue) {
+              return;
+            }
+            value = newValue;
+            dep.notify();
+          },
+        });
+      });
+    };
+
+    function Vue (options) {
+      this.options = options;
+
+      this.proxy();
+
+      new Observe(this);
+
+      new Compile(this);
+      new Watcher(this, 'msg', function (newValue) {
+        console.log(newValue);
+      });
+
+      options.mounted.call(this);
+    }
+
+    Vue.prototype.proxy = function () {
+      Object.keys(this.options.data).forEach((key) => {
+        Object.defineProperty(this, key, {
+          get: function () {
+            return this.options.data[key];
+          },
+          set: function (newValue) {
+            this.options.data[key] = newValue;
+          }
+        });
+      });
+    };
+
+    var v1 = new Vue({
+      el: '#root',
+      data: {
+        msg: 'a',
+      },
+      mounted () {
+        console.log(this);
+      },
+      methods: {
+        handleClick () {
+          this.msg = 'bsss';
+        }
+      }
+    });
+    setTimeout(() => {
+      v1.msg = 'b';
+    }, 1000);
+    setTimeout(() => {
+      v1.msg = 'c';
+    }, 2000);
   </script>
 </body>
 </html>
