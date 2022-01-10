@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function createStore () {
+      var currentState = {};
+      var observers = [];
+      function getState () {
+        return currentState;
+      }
+      function dispatch (action) {
+        currentState = reducer(currentState, action);
+        observers.forEach(fn => fn());
+      }
+      function subscribe (fn) {
+        observers.push(fn);
+      }
+      dispatch({ type: '' });
+      return { getState, dispatch, subscribe };
+    }
+
+    function reducer (state, action) {
+      switch(action.type) {
+        case 'plus':
+          return {
+            ...state,
+            count: state.count + 1,
+          };
+        default:
+          return { count: 0 };
+      }
+    }
+    var store = createStore();
+    store.subscribe(function () {
+      console.log('1111');
+    });
+    store.subscribe(function () {
+      console.log('2222');
+    });
+    store.dispatch({ type: 'plus' });
+    console.log(store.getState());
+  </script>
+</body>
+</html>
