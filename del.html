@@ -3,124 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
+  <style>
+    .outer {
+      width: 200px;
+      height: 200px;
+      border: 1px solid #ddd;
+    }
+    .inner {
+      width: 100px;
+      height: 100px;
+      border: 1px solid #ddd;
+    }
+  </style>
 </head>
 <body>
-  <div id="root" style="border: 1px solid #ddd;"></div>
+  <div class="outer">
+    <div class="inner">click me</div>
+  </div>
   <script>
-    function Element (type, props, children) {
-      this.type = type;
-      this.props = props;
-      this.children = children;
-    }
-    function createElement (type, props, children) {
-      return new Element(type, props, children);
-    }
-
-    var vDom1 = createElement('ul', { class: 'container' }, [
-      createElement('li', { class: 'item' }, ['罗志祥']),
-      createElement('li', { class: 'item' }, ['吴亦凡']),
-      createElement('li', { class: 'item' }, ['王力宏']),
-    ]);
-
-    var vDom2 = createElement('ul', { class: 'container' }, [
-      createElement('li', { class: 'item item1' }, ['罗志祥']),
-      createElement('li', { class: 'item' }, ['吴亦凡1']),
-      createElement('li', { class: 'item' }, ['王力宏']),
-    ]);
-
-    function render (vDom) {
-      console.log(vDom);
-      var el = document.createElement(vDom.type);
-      for (let key in vDom.props) {
-        setAttr(el, key, vDom.props[key]);
-      }
-
-      for (var i = 0; i < vDom.children.length; i++) {
-        if (vDom.children[i] instanceof Element) {
-          el.appendChild(render(vDom.children[i]));
-        } else {
-          el.appendChild(document.createTextNode(vDom.children[i]));
-        }
-      }
-
-      return el;
-    }
-
-    function setAttr (node, key, value) {
-      switch (key) {
-        case 'value':
-          if (node.tagName === 'input' || node.tagName === 'textarea') {
-            node.value = value;
-          }
-          break;
-        case 'style':
-          node.style.cssText = value;
-          break;
-        default:
-          node.setAttribute(key, value);
-          break;
-      }
-    }
-
-    function diff (oldTree, newTree) {
-      let patches = {};
-      let index = 0;
-      walk(oldTree, newTree, index, patches);
-      return patches;
-    }
-
-    function walk (oldTree, newTree, index, patches) {
-      let current = [];
-      if (!newTree) {
-        current.push({ type: 'remove', index });
-      } else if (isString(oldTree) && isString(newTree)) {
-        if (oldTree !== newTree) {
-          current.push({ type: 'text', text: newTree});
-        }
-      } else if (oldTree.type === newTree.type) {
-        let attr = diffAttr(oldTree.props, newTree.props);
-        if (Object.keys(attr).length) {
-          current.push({ type: 'attr', attr });
-        }
-        diffChildren(oldTree.children, newTree.children, patches);
-      } else {
-        current.push({ type: 'replace', newTree });
-      }
-      if (current.length) {
-        patches[index] = current;
-      }
-    }
-
-    let num = 0;
-
-    function diffChildren (oldTree, newTree, patches) {
-      oldTree.forEach((child, index) => {
-        walk(child, newTree[index], ++num, patches);
-      });
-    }
-
-    function diffAttr (oldAttrs, newAttrs) {
-      let patch = {};
-      for (let key in oldAttrs) {
-        if (oldAttrs[key] !== newAttrs[key]) {
-          patch[key] = newAttrs[key];
-        }
-      }
-      for (let key in newAttrs) {
-        if (!oldAttrs.hasOwnProperty(key)) {
-          patch[key] = newAttrs;
-        }
-      }
-      return patch;
-    }
-
-    function isString (obj) {
-      return typeof obj === 'string';
-    }
-
-    document.getElementById('root').appendChild(render(vDom1));
-
-    console.log(diff(vDom1, vDom2));
+    console.log(Function.__proto__ === Function.prototype);
+    console.log(Function.prototype.constructor === Function);
   </script>
 </body>
 </html>

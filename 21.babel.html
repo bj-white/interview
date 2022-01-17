@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /*
+      1.import '@babel/polyfill'; 在spa入口引入或webapck entry引入
+      2.@babel/plugin-transform-arrow-functions 转换箭头函数，缺点需一个一个引入
+      3."presets": ["@babel/preset-env"] 一次性引入所有
+      4.useBuiltIns: usage 可解决低版本Promise问题，同1，按需加载，推荐使用
+      5.@babel/plugin-transform-runtime 可优化重复代码 和 沙箱隔离 需npm install @babel/runtime-corejs3 --save
+      最终babel
+      {
+        "presets": [
+          [
+            "@babel/preset-env"
+          ]
+        ],
+        "plugins": [
+          [
+            "@babel/plugin-transform-runtime", {
+              "corejs": 3
+            }
+          ]
+        ]
+      }
+    */
+  </script>
+</body>
+</html>
