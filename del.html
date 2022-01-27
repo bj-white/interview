@@ -8,9 +8,12 @@
       width: 200px;
       height: 200px;
       border: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .inner {
-      width: 100px;
+      flex: 0 0 80px;
       height: 100px;
       border: 1px solid #ddd;
     }
@@ -21,8 +24,37 @@
     <div class="inner">click me</div>
   </div>
   <script>
-    console.log(Function.__proto__ === Function.prototype);
-    console.log(Function.prototype.constructor === Function);
+    var dom = ['a', 'b', 'c', 'd'];
+
+    var olds = ['a', 'b', 'c', 'd'];
+    var news = ['e', 'c', 'f', 'a'];
+    var oldStartIdx = 0, oldEndIdx= 3, newStartIdx = 0, newEndIdx = 3;
+    while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
+      var oldStartVnode = olds[oldStartIdx];
+      var oldEndVnode = olds[oldEndIdx];
+      var newStartVnode = news[newStartIdx];
+      var newEndVnode = news[newEndIdx];
+
+      if (!oldStartVnode) {
+        oldStartVnode = olds[++oldStartIdx];
+      } else if (!oldEndVnode) {
+        oldEndVnode = olds[--oldEndIdx];
+      } else if (oldStartVnode == newStartVnode) {
+        oldStartVnode = olds[++oldStartIdx];
+        newStartVnode = news[++newStartIdx]; 
+      } else if (oldEndVnode == newEndVnode) {
+        oldEndVnode = olds[--oldEndIdx];
+        newEndVnode = news[--newEndIdx];
+      } else if (oldStartVnode == newEndVnode) {
+        oldStartVnode = olds[++oldStartIdx];
+        newEndVnode = news[--newEndIdx];
+      } else if (oldEndVnode == newStartVnode) {
+        oldEndVnode = olds[--oldEndIdx];
+        newStartVnode = news[++newStartIdx];
+      } else {
+        
+      }
+    }
   </script>
 </body>
 </html>
