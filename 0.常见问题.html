@@ -9,6 +9,38 @@
 		/*
 		1、download失效问题，href不能跨域，否则失效，解决办法，后台寸的时候处理好
 		2、new Date('2021-08-09');
+		3、function Fun (name) {
+      this.name = name;
+      this.say1 = function () {
+        console.log(this.name);
+      };
+      this.say2 = () => {
+        console.log(this.name);
+      };
+    }
+    Fun.prototype.say3 = function () {
+      console.log(this.name);
+    };
+    Fun.prototype.say4 = () => {
+      console.log(this.name);
+    };
+    var f1 = new Fun('f1');
+    f1.say1();
+    f1.say2();
+    f1.say3();
+    f1.say4();
+
+    var obj = {
+      name: 'f1',
+      say1: function () {
+        console.log(this.name);
+      },
+      say2: () => {
+        console.log(this.name);
+      }
+    };
+    obj.say1();
+    obj.say2();
 		*/
 	</script>
 </body>

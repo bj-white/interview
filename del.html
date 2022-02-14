@@ -24,10 +24,17 @@
     <div class="inner">click me</div>
   </div>
   <script>
+    var d = {
+      a: 0,
+      b: 10,
+      c: 20,
+      d: 30,
+    };
+
     var dom = ['a', 'b', 'c', 'd'];
 
     var olds = ['a', 'b', 'c', 'd'];
-    var news = ['e', 'c', 'f', 'a'];
+    var news = ['e', 'g', 'f', 'a'];
     var oldStartIdx = 0, oldEndIdx= 3, newStartIdx = 0, newEndIdx = 3;
     while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
       var oldStartVnode = olds[oldStartIdx];
@@ -46,15 +53,25 @@
         oldEndVnode = olds[--oldEndIdx];
         newEndVnode = news[--newEndIdx];
       } else if (oldStartVnode == newEndVnode) {
+        d[oldStartVnode] = d[oldEndVnode]++;
         oldStartVnode = olds[++oldStartIdx];
         newEndVnode = news[--newEndIdx];
       } else if (oldEndVnode == newStartVnode) {
+        d[oldEndVnode] = d[oldStartVnode]--;
         oldEndVnode = olds[--oldEndIdx];
         newStartVnode = news[++newStartIdx];
       } else {
-        
+        d[newStartVnode] = d[oldStartVnode]++;
+        newStartVnode = news[++newStartIdx];
       }
     }
+    if (oldStartIdx > oldEndIdx) {} else if (newStartIdx > newEndIdx) {
+      console.log(oldStartIdx, oldEndIdx);
+      for (; oldStartIdx <= oldEndIdx; ++oldStartIdx) {
+        delete d[olds[oldStartIdx]];
+      }
+    }
+    console.log(d);// e c f b a d
   </script>
 </body>
 </html>

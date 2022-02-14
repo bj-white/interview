@@ -21,20 +21,21 @@
         console.log(result);
       }
     }
-    fun(arr);
+    // fun(arr);
 
     var temp = 0;
 
     var white = {
       [Symbol.iterator]: function () {
-        return this;
+        return {
+          next: function () {
+            if (temp++ >= 5) {
+              return {done: true, value: temp};
+            }
+            return {done: false, value: temp};
+          }
+        };
       },
-      next: function () {
-        if (temp++ >= 5) {
-          return {done: true, value: temp};
-        }
-        return {done: false, value: temp};
-      }
     };
     for (var a of white) {
       console.log(a);
