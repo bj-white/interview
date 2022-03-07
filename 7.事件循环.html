@@ -7,7 +7,7 @@
 <body>
   <script>
     /*
-      常见宏任务 setTimeout setInterval setImmediate
+      常见宏任务 setTimeout setInterval > setImmediate
       常见微任务 process.nextTick() > promise
       这两个任务的执行规则是什么？首先在call stack中的内容执行完毕清空后，
       会在Event queue检查一下哪些是宏任务哪些是微任务，然后执行所有的微任务，
@@ -15,6 +15,18 @@
       也就是说在主线程任务执行完毕后会把任务队列中的微任务全部执行，
       然后再执行一个宏任务，这个宏任务执行完再次检查队列内部的微任务，
       有就全部执行没有就再执行一个宏任务。
+    */
+    /* 
+      setTimeout通过设置一个间隔时间来不断的改变图像的位置，从而达到动画效果。
+      但利用seTimeout实现的动画在某些低端机上会出现卡顿、抖动的现象。 
+      1、setTimeout的执行时间并不是确定的。setTimeout任务被放进了异步队列中，
+      只有当主线程上的任务执行完以后，才会去检查该队列里的任务是否需要开始执行，
+      因此setTimeout 的实际执行时间一般要比其设定的时间晚一些。
+
+      2、刷新频率受屏幕分辨率和屏幕尺寸的影响，不同设备的屏幕刷新频率可能会不同，
+      而setTimeout只能设置一个固定的时间间隔，这个时间不一定和屏幕的刷新时间相同。
+
+      https://www.jianshu.com/p/af1124445ef0
     */
   </script>
 </body>

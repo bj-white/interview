@@ -1,0 +1,11 @@
+伪类：:hover :active :first-child :last-child :nth-child
+伪元素：:before :after :first-letter :first-line ::placeholder ::selection
+
+伪类是类似于添加类所以可以是多个，而伪元素在一个选择器中只能出现一次，并且只能出现在末尾
+
+:before/:after是Css2的写法，::before/::after是Css3的写法
+:before/:after 的兼容性要比::before/::after好 ，
+不过在H5开发中建议使用::before/::after比较好
+
+伪对象不会出现在DOM中，所以不能通过js来操作，仅仅是在 CSS 渲染层加入
+伪对象的特效通常要使用:hover伪类样式来激活，.span:hover:before { content: '' }

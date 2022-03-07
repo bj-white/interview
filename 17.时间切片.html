@@ -7,6 +7,11 @@
 <body>
   <ul class="list"></ul>
   <script>
+    /*
+      动画原则：（移动端效果比pc差，一定要注意性能优化）
+      有限考虑css动画（会启动硬件加速，即在GPU层对该元素渲染，CPU空闲出来可以进行其他的计算）
+      非要用js的话，配合requestAnimationFrame使用
+    */
     var list = document.querySelector('.list');
     var total = 1000000;
     var index = 0;
