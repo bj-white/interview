@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function EventBus () {
+      this._events  = new Map();
+    }
+    EventBus.prototype.on = function (type, fn) {
+      var handle = this._events.get(type);
+      if (!handle) {
+        this._events.set(type, fn);
+      } else if (handle && typeof handle === 'function') {
+        this._events.set(type, [handle, fn]);
+      } else {
+        handle.push(fn);
+      }
+    };
+    EventBus.prototype.emit = function (type, ...params) {
+      var handle = this._events.get(type);
+      if (handle) {
+        if (Array.isArray(handle)) {
+          for (var i = 0; i < handle.length; i++) {
+            handle[i].apply(this, params);
+          }
+        } else {
+          handle.apply(this, params);
+        }
+      }
+    };
+    EventBus.prototype.off = function (type, fn) {
+      var handle = this._events.get(type);
+      if (handle && typeof handle === 'function') {
+        this._events.delete(type);
+      } else {
+        handler.splice(handler.findIndex(e => e === fn), 1);
+      }
+    };
+    EventBus.prototype.once = function (type, fn) {
+      var _self = this;
+      function handle () {
+        fn.apply(null, arguments);
+        _self.off(type, handle);
+      }
+      _self.on(type, handle);
+    };
+
+    /* 测试 */
+    function test1 (...params) {
+      console.log(11, params)
+    }
+
+    function test2 (...params) {
+      console.log(22, params)
+    }
+
+    function test3 (...params) {
+      console.log(33, params)
+    }
+
+    function test4 (...params) {
+      console.log(params)
+      console.log(33, params)
+    }
+
+    let eb = new EventBus()
+    eb.on('event1', test1)
+    eb.emit('event1', '第一次')
+
+    eb.off('event1', test1)
+    eb.emit('event1', ['第二次1', '第二次2'])
+
+    eb.once('once', test4);
+    eb.emit('once', '执行一次', 1, 2, 3)
+    eb.emit('once', '执行一次', 1, 2, 3)
+  </script>
+</body>
+</html>

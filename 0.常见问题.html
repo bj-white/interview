@@ -41,7 +41,26 @@
     };
     obj.say1();
     obj.say2();
+
 		*/
+    function Flyer (name, speed) {
+      this.name = name;
+      this.speed = speed;
+    }
+    Flyer.prototype.fly = function () {
+      console.log(this.name + '正在以' + this.speed + '的速度飞行');
+    };
+
+    function Fun (ctor, ...res) {
+      var obj = new Object();
+      obj.__proto__ = ctor.prototype;
+      let result = ctor.apply(obj, res);
+      return typeof result === 'object' ? result : obj;
+    }
+
+    const f1 = new Fun(Flyer, 'f1', 10);
+    f1.fly();
+    console.log(f1);
 	</script>
 </body>
 </html>

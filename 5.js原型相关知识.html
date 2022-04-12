@@ -26,6 +26,8 @@
     PlaneL instanceof PlaneR
     PlaneL.__proto__ = Function.prototype
     PlaneR.prototype = Plane.prototype
+
+    arr.__proto__ = Array.prototype.__proto__ = Object.prototype
     */
     function Foo() {
       getName = function() {

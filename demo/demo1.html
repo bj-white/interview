@@ -8,27 +8,18 @@
 <body>
   <button id="btn">click me</button>
   <script>
-    console.log(performance);
-    var btn = document.getElementById('btn');
-    btn.addEventListener('click', function () {
-      Promise.resolve().then(function () {
-        console.log('micro 1');
+    new Promise((resolve) => {
+      console.log(0);
+      resolve();
+      Promise.resolve().then(() => {
+        console.log(3);
       });
-      /* setTimeout(() => {
-        console.log('micro 1');
-      }, 0); */
+      console.log(2);
+    }).then(() => {
       console.log(1);
     });
-    btn.addEventListener('click', function () {
-      Promise.resolve().then(function () {
-        console.log('micro 2');
-      });
-      /* setTimeout(() => {
-        console.log('micro 2');
-      }, 0); */
-      console.log(2);
-    });
-    // btn.click();
+    console.log(4);
+    // 0 2 4 3 1
   </script>
 </body>
 </html>

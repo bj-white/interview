@@ -1,16 +1,15 @@
-const http = require('http');
-
-const server = http.createServer();
-
-server.on('request', (req, res) => {
-  console.log(req.headers);
-  if (req.url === '/') {
-    // res.setHeader('Content-Type', 'text/html; charset=utf8');
-    res.write('hello world');
-    res.end();
-  }
+Promise.resolve().then(() => {
+  console.log('promise');
 });
 
-server.listen(8081, () => {
-  console.log('success');
+process.nextTick(() => {
+  console.log('nexttick');
 });
+
+setImmediate(() => {
+  console.log('setImmediate');
+});
+
+setTimeout(() => {
+  console.log('setTimeout');
+}, 0);
