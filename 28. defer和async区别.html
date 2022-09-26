@@ -1,3 +1,8 @@
 script        会阻碍 HTML 解析，只有下载好并执行完脚本才会继续解析 HTML。
 async script  解析 HTML 过程中进行脚本的异步下载，下载成功立马执行，有可能会阻断 HTML 的解析。
 defer script  完全不会阻碍 HTML 的解析，解析完成之后再按照顺序执行脚本。
+动态加载脚本   let script = document.createElement('script');
+              script.src = 'gibberish.js';
+              document.head.appendChild(script);
+              效果相当于async，由于并不是所有浏览器都支持async，所以会把script.async = false;来当作同步处理
+              

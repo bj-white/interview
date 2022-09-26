@@ -1,0 +1,1 @@
+处理isNaN可以判断NaN，Object.is(NaN, NaN) = true，所以也可以判断

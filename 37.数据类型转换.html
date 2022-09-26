@@ -1,0 +1,11 @@
+Number(null) = 0
+Number('') = 0
+
+parseInt(null) = NaN
+parseInt('') = NaN
+
+parseInt可接受第二个参数，表示需要转化的进制；parseFloat不接收第二个参数
+
+null和undefined没有toString()方法，要用String()，String()转换规则，优先调用toString方法；如果值是 null，返回"null"；如果值是 undefined，返回"undefined"。
+
+let 和 const有利于垃圾回收，因为缩短了变量的生命周期

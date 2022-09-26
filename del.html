@@ -3,75 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
-  <style>
-    .outer {
-      width: 200px;
-      height: 200px;
-      border: 1px solid #ddd;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .inner {
-      flex: 0 0 80px;
-      height: 100px;
-      border: 1px solid #ddd;
-    }
-  </style>
 </head>
 <body>
-  <div class="outer">
-    <div class="inner">click me</div>
-  </div>
   <script>
-    var d = {
-      a: 0,
-      b: 10,
-      c: 20,
-      d: 30,
-    };
-
-    var dom = ['a', 'b', 'c', 'd'];
-
-    var olds = ['a', 'b', 'c', 'd'];
-    var news = ['e', 'g', 'f', 'a'];
-    var oldStartIdx = 0, oldEndIdx= 3, newStartIdx = 0, newEndIdx = 3;
-    while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
-      var oldStartVnode = olds[oldStartIdx];
-      var oldEndVnode = olds[oldEndIdx];
-      var newStartVnode = news[newStartIdx];
-      var newEndVnode = news[newEndIdx];
-
-      if (!oldStartVnode) {
-        oldStartVnode = olds[++oldStartIdx];
-      } else if (!oldEndVnode) {
-        oldEndVnode = olds[--oldEndIdx];
-      } else if (oldStartVnode == newStartVnode) {
-        oldStartVnode = olds[++oldStartIdx];
-        newStartVnode = news[++newStartIdx]; 
-      } else if (oldEndVnode == newEndVnode) {
-        oldEndVnode = olds[--oldEndIdx];
-        newEndVnode = news[--newEndIdx];
-      } else if (oldStartVnode == newEndVnode) {
-        d[oldStartVnode] = d[oldEndVnode]++;
-        oldStartVnode = olds[++oldStartIdx];
-        newEndVnode = news[--newEndIdx];
-      } else if (oldEndVnode == newStartVnode) {
-        d[oldEndVnode] = d[oldStartVnode]--;
-        oldEndVnode = olds[--oldEndIdx];
-        newStartVnode = news[++newStartIdx];
-      } else {
-        d[newStartVnode] = d[oldStartVnode]++;
-        newStartVnode = news[++newStartIdx];
-      }
-    }
-    if (oldStartIdx > oldEndIdx) {} else if (newStartIdx > newEndIdx) {
-      console.log(oldStartIdx, oldEndIdx);
-      for (; oldStartIdx <= oldEndIdx; ++oldStartIdx) {
-        delete d[olds[oldStartIdx]];
-      }
-    }
-    console.log(d);// e c f b a d
+    const obj = {}
+    Object.defineProperties(obj, {
+      year: {}
+    })
+    const r1 = Object.getOwnPropertyDescriptor(obj, 'year')
+    console.log(r1)
+    const r2 = Object.getOwnPropertyDescriptors(obj)
+    console.log(r2)
   </script>
 </body>
 </html>
