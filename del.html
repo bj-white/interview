@@ -6,14 +6,16 @@
 </head>
 <body>
   <script>
-    const obj = {}
-    Object.defineProperties(obj, {
-      year: {}
-    })
-    const r1 = Object.getOwnPropertyDescriptor(obj, 'year')
-    console.log(r1)
-    const r2 = Object.getOwnPropertyDescriptors(obj)
-    console.log(r2)
+    async function foo () {
+      let p = new Promise((resolve) => {
+        setTimeout(resolve, 1000, 3)
+      })
+      /* p.then((value) => {
+        console.log(value)
+      }) */
+      console.log(await p)
+    }
+    foo()
   </script>
 </body>
 </html>

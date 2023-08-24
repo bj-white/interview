@@ -1,0 +1,44 @@
+处理isNaN可以判断NaN，Object.is(NaN, NaN) = true，所以也可以判断
+===================================================================
+function Person () {}
+const p1 = new Person()
+Person.prototype = {
+  say: function () {
+    console.log('aaaa')
+  }
+}
+p1.say() // 报错
+===================================================================
+class Vehicle {}
+const FooMixin = (SuperClass) => class extends SuperClass {
+  foo () {
+    console.log('foo')
+  }
+}
+const BarMixin = (SuperClass) => class extends SuperClass {
+  bar () {
+    console.log('bar')
+  }
+}
+const BazMixin = (SuperClass) => class extends SuperClass {
+  baz () {
+    console.log('baz')
+  }
+}
+
+function mix (BaseClass, ...args) {
+  return args.reduce((accumulator, current) => {
+    return current(accumulator)
+  }, BaseClass)
+}
+
+class Bus extends mix(Vehicle, FooMixin, BarMixin, BazMixin) {}
+
+const b1 = new Bus()
+b1.foo()
+b1.bar()
+b1.baz()
+===================================================================
+尾调用优化（递归情况最明显）
+===================================================================
+
